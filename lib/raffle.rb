@@ -1,3 +1,6 @@
+require 'rubygems'
+require 'action_mailer'
+
 class Raffle
   attr_accessor :participants
 
@@ -13,7 +16,7 @@ class Raffle
       @shuffle.push(f)
       return shift(exclude)
     end
-    @shuffle.shift
+    @shuffle.shift[1]
   end
 
   def mix
@@ -25,35 +28,35 @@ class Raffle
     @mix
   end
 
-  def pointer
-    point = mix.keys.first.to_s
-    s = "#{point} > "
-    useds = [point]
-
-    (1..mix.size).each do |v|
-      point = mix.fetch(point)
-      s << point
-      if useds.include?(point)
-        s << " | "
-        w = mix.delete(point)
-        (0..mix.keys.size - 1).each do |n|
-          if !useds.include?(mix.keys[n].to_s)
-            point = mix.keys[n].to_s
-            s << "#{point} > "
-            break
-          end
-        end
-      else
-        s << " > "
-      end
-      useds << point
-    end
-    s.sub(/ \| $/, '')
-  end
-
   def send
+    config = {}
     mix.each do |key, value|
-      
+      config[:email] = @participants.assoc(key)[0]
+      config[:name] = @participants.assoc(key)[1]
+      config[:friend] = value
+      Notifier.deliver_email(config)
     end
   end
 end
+
+class Notifier < ActionMailer::Base
+  def email(config)
+    recipients    config[:email]
+    from          "naoreponder@jus.com.br"
+    subject       "Jus Amigo Oculto 2009"
+    content_type  "text/plain"
+    body          :name => config[:name], :friend => config[:friend]
+  end
+end
+
+Notifier.template_root = File.dirname(__FILE__)
+
+ActionMailer::Base.smtp_settings = {
+  :address  => "smtp",
+  :port  => 25, 
+  :domain => "domain",
+  :user_name  => "user",
+  :password  => "password",
+  :authentication  => :login
+}
+
