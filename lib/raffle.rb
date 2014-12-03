@@ -43,12 +43,13 @@ class Raffle
   end
 
   def send
+    puts "PREPARANDO PRA ENVIAR"
     config = {}
     mix.each do |p|
       config[:email] = p.email
       config[:name] = p.name
       config[:friend] = p.friend
-      prepare_mail(config)
+      prepare_mail(config) if mix.size == @participants.size
     end
   end
 
