@@ -1,62 +1,86 @@
+# encoding: utf-8
 require 'rubygems'
-require 'action_mailer'
+require 'mail'
+require 'pry'
+
+class Person
+  attr_accessor :name, :email, :friend
+  
+  def initialize(name, email)
+    @name, @email, @friend = name, email, nil
+  end
+
+  def to_s
+    "#{@name}: #{@email}"
+  end
+end
 
 class Raffle
   attr_accessor :participants
 
   def initialize(participants = [])
     @participants = participants
-    @shuffle = @participants.shuffle
+    @shuffle = @participants
+    @raffleds = []
+    @mix = nil
+    rand(100).times { @shuffle = @shuffle.shuffle }
   end
 
-  def shift(exclude = '')
-    f = @shuffle.first
-    if f.first == exclude
-      @shuffle.shift
-      @shuffle.push(f)
-      return shift(exclude)
+  def select(person)
+    friend = @shuffle.shuffle!.shift
+    if friend == person
+      @shuffle.push(person)
+      puts "***** CONFLITO: #{friend} = #{person}. Buscando outro amigo! *****"
+      return select(person)
     end
-    @shuffle.shift[1]
+    person.friend = friend.name
+    person
   end
 
   def mix
     return @mix if @mix && !@mix.empty?
-    @mix = {}
-    @participants.each do |p|
-      @mix[p.first] = shift(p.first)
-    end
-    @mix
+    @mix = @participants.map { |p| select(p) }
   end
 
   def send
     config = {}
-    mix.each do |key, value|
-      config[:email] = @participants.assoc(key)[0]
-      config[:name] = @participants.assoc(key)[1]
-      config[:friend] = value
-      Notifier.deliver_email(config)
+    mix.each do |p|
+      config[:email] = p.email
+      config[:name] = p.name
+      config[:friend] = p.friend
+      prepare_mail(config)
     end
   end
+
+  protected
+    def prepare_mail(config)
+      mail = Mail.new do
+        content_type 'text/plain; charset=UTF-8'
+        from         'email@gmail.com'   # Configure aqui o e-mail do remetente
+        to           config[:email]
+        subject      'Amigo Oculto 2014'
+        body         <<-EOF
+Oi #{config[:name]},
+
+Você está participando do AMIGO OCULTO 2014 e seu Amigo é: #{config[:friend]}
+
+Boas Festas.
+-----------------------
+Esta mensagem foi enviada automaticamente, portanto o sigilo dela só depende de você. :-)}
+EOF
+      end
+
+      mail.deliver!
+    end
 end
 
-class Notifier < ActionMailer::Base
-  def email(config)
-    recipients    config[:email]
-    from          "naoreponder@jus.com.br"
-    subject       "Jus Amigo Oculto 2009"
-    content_type  "text/plain"
-    body          :name => config[:name], :friend => config[:friend]
-  end
+Mail.defaults do
+  delivery_method :smtp, { 
+    :address => 'smtp.gmail.com',
+    :port => 587,
+    :user_name => "email@gmail.com",  # Configure aqui o e-mail de login
+    :password => "***********",       # Configure aqui a senha do usuario acima
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 end
-
-Notifier.template_root = File.dirname(__FILE__)
-
-ActionMailer::Base.smtp_settings = {
-  :address  => "smtp",
-  :port  => 25, 
-  :domain => "domain",
-  :user_name  => "user",
-  :password  => "password",
-  :authentication  => :login
-}
-
