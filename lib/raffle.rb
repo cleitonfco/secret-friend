@@ -16,8 +16,8 @@ class Person
 
   def select(raffle)
     raffle.knuth_shuffle
-    friend = valids.shift
     valids = raffle.shuffle - [self]
+    friend = valids.shift
     raffle.shuffle -= [friend]
     raise 'Conflito no Sorteio. Não foi possível selecionar um amigo.' unless friend
     self.friend = friend.name
