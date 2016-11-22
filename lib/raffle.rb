@@ -68,41 +68,47 @@ class Raffle
       config[:email] = p.email
       config[:name] = p.name
       config[:friend] = p.friend
-      # prepare_mail(config) if mix.size == @participants.size
-      puts "Sorteio: #{p.name} => #{p.friend}"
+      prepare_mail(config) if mix.size == @participants.size
     end
   end
 
-#   protected
-#     def prepare_mail(config)
-#       mail = Mail.new do
-#         content_type 'text/plain; charset=UTF-8'
-#         from         'naoresponder@jus.com.br'   # Configure aqui o e-mail do remetente
-#         to           config[:email]
-#         bcc          'cleitonfco@gmail.com'
-#         subject      'Amiga Secreta 2014'
-#         body         <<-EOF
-# Oi #{config[:name]},
+  protected
+    def prepare_mail(config)
+      mail = Mail.new do
+        content_type 'text/plain; charset=UTF-8'
+        from         'naoresponder@jus.com.br'   # Configure aqui o e-mail do remetente
+        to           config[:email]
+        subject      'TESTE: Amigo Oculto Jus Navigandi 2015'
+        body         <<-EOF
+Oi #{config[:name]},
 
-# Você está participando da AMIGA SECRETA DE 2014 e sua Amiga é a #{config[:friend]}
+Você está participando do TESTE DO AMIGO OCULTO do Jus Navigandi 2015 e seu(sua) Amigo(a) é: #{config[:friend]}
 
-# Boas Festas.
-# -----------------------
-# Esta mensagem foi enviada automaticamente, portanto o sigilo dela só depende de você. :-)}
-# EOF
-#       end
+Guarde este nome só pra você, memorize-o e apague este email para garantir o sigilo dessa informação.
 
-#       mail.deliver!
-#     end
+Agora que você já sabe quem você tirou, corra pro http://jusfriends.herokuapp.com/, lá você pode cadastrar dicas
+do que você quer ganhar, ver as dicas do que comprar e ainda pode fazer perguntas e/ou comentários 
+totalmente "anônimos" (sigilo absoluto) para conhecer melhor as preferências do(a) amigo(a) acima.
+
+PS: Se você ainda não tem cadastro no JusFriends, acesse aqui: http://jusfriends.herokuapp.com/cadastro.
+
+Boas Festas.
+-----------------------
+Esta mensagem foi enviada automaticamente, portanto o sigilo dela só depende de você. :)
+EOF
+      end
+
+      mail.deliver!
+    end
 end
 
-# Mail.defaults do
-#   delivery_method :smtp, { 
-#     :address => 'smtp.gmail.com',
-#     :port => 587,
-#     :user_name => "naoresponder@jus.com.br",
-#     :password => "m2E9lXi9s7s8A",
-#     :authentication => :plain,
-#     :enable_starttls_auto => true
-#   }
-# end
+Mail.defaults do
+  delivery_method :smtp, { 
+    :address => 'smtp.gmail.com',
+    :port => 587,
+    :user_name => "naoresponder@jus.com.br",
+    :password => "m2E9lXi9s7s8A",
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
+end
