@@ -2,16 +2,13 @@
 require './lib/raffle'
 
 friends = [
-  Person.new('Paulo Gustavo',       'paulog@gmail.com'), 
-  Person.new('Ayla Maria',          'ayla.rocha@gmail.com'), 
-  Person.new('Cleiton Francisco',   'cleitonfco@gmail.com'), 
-  Person.new('Adenisia Lima',       'adenisialima@hotmail.com'), 
-  Person.new('Rodrigo Chaves',      'rodrigo@jus.com.br'), 
-  Person.new('Alysson Daniel',      'alyssondaniel@gmail.com'), 
-  Person.new('Mateus Pontes',       'mateuspo10@gmail.com'), 
-  Person.new('Elinaldo Nascimento', 'elinaldo.java@gmail.com'), 
-  Person.new('José Carvalho',       'carvalho@jus.com.br'), 
-  Person.new('Italo Carvalho',      'italo@jus.com.br'), 
+  Person.new('Ayla Rocha',     'ayla.rocha@gmail.com'), 
+  Person.new('Alyne Bandeira', 'alyneband@hotmail.com'), 
+  Person.new('Melissa Rocha',  'melissa.rocha@gmail.com'), 
+  Person.new('Idina Lopes',    'idina.lopes@telefonica.com'), 
+  Person.new('Carla Adriana',  'carlaadrianaperes@yahoo.com.br'), 
+  Person.new('Adenisia Rocha', 'adenisialima@hotmail.com'), 
+  Person.new('Regina Maria',   'reginamsa@yahoo.com.br'), 
 ]
 
 r = Raffle.new(friends)

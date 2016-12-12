@@ -78,23 +78,16 @@ class Raffle
         content_type 'text/plain; charset=UTF-8'
         from         'naoresponder@jus.com.br'   # Configure aqui o e-mail do remetente
         to           config[:email]
-        subject      'TESTE: Amigo Oculto Jus Navigandi 2015'
+        bcc          'cleitonfco@gmail.com'
+        subject      'Amigo oculto Amoras 2016 (definitivo)'
         body         <<-EOF
-Oi #{config[:name]},
+Querida Amora #{config[:name]},
 
-Você está participando do TESTE DO AMIGO OCULTO do Jus Navigandi 2015 e seu(sua) Amigo(a) é: #{config[:friend]}
+(Primeiramente: desconsidere o e-mail anterior, o que está valendo é esse)
 
-Guarde este nome só pra você, memorize-o e apague este email para garantir o sigilo dessa informação.
+Sua amora oculta é: #{config[:friend].upcase}
 
-Agora que você já sabe quem você tirou, corra pro http://jusfriends.herokuapp.com/, lá você pode cadastrar dicas
-do que você quer ganhar, ver as dicas do que comprar e ainda pode fazer perguntas e/ou comentários 
-totalmente "anônimos" (sigilo absoluto) para conhecer melhor as preferências do(a) amigo(a) acima.
-
-PS: Se você ainda não tem cadastro no JusFriends, acesse aqui: http://jusfriends.herokuapp.com/cadastro.
-
-Boas Festas.
------------------------
-Esta mensagem foi enviada automaticamente, portanto o sigilo dela só depende de você. :)
+Corre 🏃, que a confra será dia 21 ou 22 de dezembro. Confirmaremos no mensário da Lis, domingo.
 EOF
       end
 
