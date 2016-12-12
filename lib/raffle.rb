@@ -4,10 +4,10 @@ require 'mail'
 require 'pry'
 
 class Person
-  attr_accessor :name, :email, :friend
+  attr_accessor :name, :email, :gender, :friend
   
-  def initialize(name, email)
-    @name, @email, @friend = name, email, nil
+  def initialize(name, email, gender)
+    @name, @email, @gender, @friend = name, email, gender, nil
   end
 
   def to_s
@@ -20,7 +20,7 @@ class Person
     friend = valids.shift
     raffle.shuffle -= [friend]
     raise 'Conflito no Sorteio. Não foi possível selecionar um amigo.' unless friend
-    self.friend = friend.name
+    self.friend = friend
     self
   end
 end
@@ -65,8 +65,9 @@ class Raffle
     puts "PREPARANDO PRA ENVIAR"
     config = {}
     mix.each do |p|
-      config[:email] = p.email
-      config[:name] = p.name
+      config[:email]  = p.email
+      config[:name]   = p.name
+      config[:gender] = p.gender
       config[:friend] = p.friend
       prepare_mail(config) if mix.size == @participants.size
     end
@@ -78,23 +79,18 @@ class Raffle
         content_type 'text/plain; charset=UTF-8'
         from         'naoresponder@jus.com.br'   # Configure aqui o e-mail do remetente
         to           config[:email]
-        subject      'TESTE: Amigo Oculto Jus Navigandi 2015'
+        bcc          'cleitonfco@gmail.com'
+        subject      'Amigo oculto Inspire 2016'
         body         <<-EOF
-Oi #{config[:name]},
+#{config[:gender] == "M" ? "Querido" : "Querida"} #{config[:name]},
 
-Você está participando do TESTE DO AMIGO OCULTO do Jus Navigandi 2015 e seu(sua) Amigo(a) é: #{config[:friend]}
+#{config[:friend].gender == "M" ? "Seu inspirado oculto é" : "Sua inspirada oculta é"} #{config[:friend].name.upcase}.
 
-Guarde este nome só pra você, memorize-o e apague este email para garantir o sigilo dessa informação.
+A confraternização será no dia 16/12.
 
-Agora que você já sabe quem você tirou, corra pro http://jusfriends.herokuapp.com/, lá você pode cadastrar dicas
-do que você quer ganhar, ver as dicas do que comprar e ainda pode fazer perguntas e/ou comentários 
-totalmente "anônimos" (sigilo absoluto) para conhecer melhor as preferências do(a) amigo(a) acima.
+Local a confirmar.
 
-PS: Se você ainda não tem cadastro no JusFriends, acesse aqui: http://jusfriends.herokuapp.com/cadastro.
-
-Boas Festas.
------------------------
-Esta mensagem foi enviada automaticamente, portanto o sigilo dela só depende de você. :)
+Boas festas.
 EOF
       end
 
