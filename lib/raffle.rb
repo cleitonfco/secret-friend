@@ -78,7 +78,7 @@ class Raffle
         content_type 'text/plain; charset=UTF-8'
         from         'naoresponder@jus.com.br'   # Configure aqui o e-mail do remetente
         to           config[:email]
-        subject      'TESTE: Amigo Oculto Jus Navigandi 2015'
+        subject      'Amigo Oculto Jus.com.br 2016'
         body         <<-EOF
 Oi #{config[:name]},
 
@@ -96,6 +96,23 @@ Boas Festas.
 -----------------------
 Esta mensagem foi enviada automaticamente, portanto o sigilo dela só depende de você. :)
 EOF
+#         subject      'Tá na hora de fazer com um amigo seu o que 2016 fez com você'
+#         body         <<-EOF
+# Oi #{config[:name]},
+
+# 2016 foi um ano, digamos assim, criativo. E já que essa temporada foi mais carregada no quesito ZOEIRA, você não vai deixar
+# terminar impunimente. Mostre seu senso de humor e ajude a trolar sadiamente os seus amigos e amigas da empresa.
+
+# Atenção: você pode ZOAR quantos amigos você quiser, mas o seu alvo primário é:
+
+#   #{config[:friend].upcase}
+
+# Guarde este nome só pra você, memorize-o e apague este email para garantir o sigilo dessa informação.
+
+# Não que vá ter alguma dica útil, mas não custa nada recomendar uma passada no http://jusfriends.herokuapp.com/
+
+# ** The zoeira is beginning and never ends. **
+# EOF
       end
 
       mail.deliver!
