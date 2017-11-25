@@ -1,6 +1,7 @@
 # encoding: utf-8
 require 'rubygems'
 require 'mail'
+require 'config/mail'
 
 class Person
   attr_accessor :name, :email, :friend
@@ -118,13 +119,3 @@ EOF
     end
 end
 
-Mail.defaults do
-  delivery_method :smtp, { 
-    :address => 'smtp.gmail.com',
-    :port => 587,
-    :user_name => "naoresponder@jus.com.br",
-    :password => "m2E9lXi9s7s8A",
-    :authentication => :plain,
-    :enable_starttls_auto => true
-  }
-end
