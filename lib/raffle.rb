@@ -1,7 +1,6 @@
 # encoding: utf-8
 require 'rubygems'
 require 'mail'
-require 'pry'
 
 class Person
   attr_accessor :name, :email, :friend
