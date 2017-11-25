@@ -1,4 +1,5 @@
 # encoding: utf-8
+require './lib/person'
 require './lib/raffle'
 
 friends = [
