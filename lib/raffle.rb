@@ -52,15 +52,39 @@ class Raffle
 
   protected
     def prepare_mail(config)
+      msg = zoeira_message(config[:name], config[:friend])
       mail = Mail.new do
         content_type 'text/plain; charset=UTF-8'
         from         'naoresponder@jus.com.br'   # Configure aqui o e-mail do remetente
         to           config[:email]
-        subject      'Amigo Oculto Jus.com.br 2016'
-        body         <<-EOF
-Oi #{config[:name]},
+        subject      'Amigo Oculto Jus.com.br 2017'
+        body         msg
+      end
 
-Você está participando do TESTE DO AMIGO OCULTO do Jus Navigandi 2015 e seu(sua) Amigo(a) é: #{config[:friend]}
+      mail.deliver!
+    end
+
+    def zoeira_message(name, friend)
+%{Oi #{name},
+
+É hora de mostrar que você tem senso de humor e que vai ajudar a trolar sadiamente os seus amigos e amigas da empresa.
+
+Atenção: você pode ZOAR quantos amigos você quiser, mas o escolhido desse ano será:
+
+  #{friend.upcase}
+
+Guarde este nome só pra você, memorize-o e apague este email para garantir o sigilo dessa informação.
+
+Não que vá ter alguma dica útil (neste caso), mas não custa nada recomendar uma passada no http://jusfriends.herokuapp.com/
+
+** The zoeira is beginning and never ends. **
+}
+    end
+
+    def body_message(name, friend)
+%{Oi #{name},
+
+Você está participando do Amigo Oculto do Jus.com.br 2017 e #{friend}
 
 Guarde este nome só pra você, memorize-o e apague este email para garantir o sigilo dessa informação.
 
@@ -73,27 +97,7 @@ PS: Se você ainda não tem cadastro no JusFriends, acesse aqui: http://jusfrien
 Boas Festas.
 -----------------------
 Esta mensagem foi enviada automaticamente, portanto o sigilo dela só depende de você. :)
-EOF
-#         subject      'Tá na hora de fazer com um amigo seu o que 2016 fez com você'
-#         body         <<-EOF
-# Oi #{config[:name]},
-
-# 2016 foi um ano, digamos assim, criativo. E já que essa temporada foi mais carregada no quesito ZOEIRA, você não vai deixar
-# terminar impunimente. Mostre seu senso de humor e ajude a trolar sadiamente os seus amigos e amigas da empresa.
-
-# Atenção: você pode ZOAR quantos amigos você quiser, mas o seu alvo primário é:
-
-#   #{config[:friend].upcase}
-
-# Guarde este nome só pra você, memorize-o e apague este email para garantir o sigilo dessa informação.
-
-# Não que vá ter alguma dica útil, mas não custa nada recomendar uma passada no http://jusfriends.herokuapp.com/
-
-# ** The zoeira is beginning and never ends. **
-# EOF
-      end
-
-      mail.deliver!
+}
     end
 end
 
